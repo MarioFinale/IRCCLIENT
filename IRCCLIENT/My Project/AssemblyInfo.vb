@@ -9,12 +9,12 @@ Imports System.Runtime.InteropServices
 ' Revisar los valores de los atributos del ensamblado
 
 <Assembly: AssemblyTitle("IRCCLIENT")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyDescription("SIMPLE IRC CLIENT")>
+<Assembly: AssemblyCompany("MarioFinale")>
 <Assembly: AssemblyProduct("IRCCLIENT")>
-<Assembly: AssemblyCopyright("Copyright ©  2019")>
-<Assembly: AssemblyTrademark("")>
-
+<Assembly: AssemblyCopyright("GNU General Public License v2.0, MarioFinale 2017")>
+<Assembly: AssemblyTrademark("MarioFinale")>
+<Assembly: CLSCompliant(False)>
 <Assembly: ComVisible(False)>
 
 'El siguiente GUID sirve como id. de typelib si este proyecto se expone a COM.
@@ -31,5 +31,4 @@ Imports System.Runtime.InteropServices
 ' mediante el carácter '*', como se muestra a continuación:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.0.0.0")>
-<Assembly: AssemblyFileVersion("1.0.0.0")>
+<Assembly: AssemblyVersion("1.1.0.0")>
