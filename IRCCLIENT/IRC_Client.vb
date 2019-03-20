@@ -35,7 +35,6 @@ Namespace IRC
         Private _configFile As ConfigFile
         Private Prefixes As String() = {"/"}
         Private Commands As New IRCCommandResolver(Prefixes)
-
         Private lastmessage As New IRCMessage("", {""})
 
         Private _workerbot As WikiBot.Bot
