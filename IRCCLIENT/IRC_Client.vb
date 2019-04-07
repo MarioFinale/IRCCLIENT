@@ -31,8 +31,8 @@ Namespace IRC
         Private _networkStream As NetworkStream = Nothing
         Private _streamWriter As StreamWriter = Nothing
         Private _streamReader As StreamReader = Nothing
-        Private _opFile As ConfigFile
-        Private _configFile As ConfigFile
+        Private _opFile As String
+        Private _configFile As String
         Private Prefixes As String() = {"/"}
         Private Commands As New IRCCommandResolver(Prefixes)
         Private lastmessage As New IRCMessage("", {""})
@@ -59,7 +59,7 @@ Namespace IRC
 #End Region
 
 
-        Public Sub New(ByVal Cfile As ConfigFile, ByVal port As Int32, ByVal opFile As ConfigFile, ByRef bot As WikiBot.Bot, taskadmin As TaskAdmin, exeversion As String, exename As String, commandprefixes As String())
+        Public Sub New(ByVal Cfile As String, ByVal port As Int32, ByVal opFile As String, ByRef bot As WikiBot.Bot, taskadmin As TaskAdmin, exeversion As String, exename As String, commandprefixes As String())
             Prefixes = commandprefixes
             Commands = New IRCCommandResolver(Prefixes)
             _workerbot = bot
@@ -69,14 +69,15 @@ Namespace IRC
             Initialize(Cfile, port, opFile)
         End Sub
 
-        Public Sub Initialize(ByVal Cfile As ConfigFile, ByVal port As Int32, ByVal opFile As ConfigFile)
+        Public Sub Initialize(ByVal Cfile As String, ByVal port As Int32, ByVal opFile As String)
             Dim tserver As String
             Dim tname As String
             Dim tpass As String
             Dim tchannels As String()
+            Dim params As String() = File.ReadAllLines(Cfile)
 
-            If Not Cfile.Params.Count = 4 Then
-                IO.File.Delete(Cfile.Path)
+            If Not params.Count = 4 Then
+                IO.File.Delete(Cfile)
                 Console.Clear()
                 Console.WriteLine(IRCMessages.NoIrcConfigFile)
                 Console.WriteLine(IRCMessages.NewIrcNetworkAdress)
@@ -87,12 +88,12 @@ Namespace IRC
                 tpass = Console.ReadLine
                 Console.WriteLine(IRCMessages.NewIrcNetworkChannels)
                 tchannels = Console.ReadLine.Split("|"c)
-                IO.File.AppendAllLines(Cfile.Path, {tserver, tname, tpass, String.Join("|"c, tchannels)})
+                IO.File.AppendAllLines(Cfile, {tserver, tname, tpass, String.Join("|"c, tchannels)})
             Else
-                tserver = Cfile.Params(0)
-                tname = Cfile.Params(1)
-                tpass = Cfile.Params(2)
-                tchannels = Cfile.Params(3).Trim.Split("|"c)
+                tserver = params(0)
+                tname = params(1)
+                tpass = params(2)
+                tchannels = params(3).Trim.Split("|"c)
             End If
             _configFile = Cfile
             _opFile = opFile
@@ -292,9 +293,9 @@ Namespace IRC
 
         Sub LoadConfig()
             OPlist = New List(Of String)
-            If File.Exists(_opFile.Path) Then
+            If File.Exists(_opFile) Then
                 EventLogger.Log(IRCMessages.LoadingOPs, Reflection.MethodBase.GetCurrentMethod().Name, _sNickName)
-                Dim opstr As String() = File.ReadAllLines(_opFile.Path)
+                Dim opstr As String() = File.ReadAllLines(_opFile)
                 Try
                     For Each op As String In opstr
                         OPlist.Add(op)
@@ -305,7 +306,7 @@ Namespace IRC
             Else
                 EventLogger.Log(IRCMessages.NoOpsFile, Reflection.MethodBase.GetCurrentMethod().Name, _sNickName)
                 Try
-                    File.Create(_opFile.Path).Close()
+                    File.Create(_opFile).Close()
                 Catch ex As IOException
                     EventLogger.Log(String.Format(IRCMessages.FileCreateErr, _opFile), Reflection.MethodBase.GetCurrentMethod().Name, _sNickName)
                 End Try
@@ -317,7 +318,7 @@ Namespace IRC
                 Console.WriteLine(IRCMessages.NewOp)
                 Dim MainOp As String = Console.ReadLine
                 Try
-                    File.WriteAllText(_opFile.Path, MainOp)
+                    File.WriteAllText(_opFile, MainOp)
                     OPlist.Add(MainOp)
                 Catch ex As IOException
                     EventLogger.Log(String.Format(IRCMessages.FileSaveErr, _opFile), Reflection.MethodBase.GetCurrentMethod().Name, _sNickName)
@@ -341,7 +342,7 @@ Namespace IRC
                 If IsOp(message, source, user) Then
                     OPlist.Add(Param)
                     Try
-                        File.WriteAllLines(_opFile.Path, OPlist.ToArray)
+                        File.WriteAllLines(_opFile, OPlist.ToArray)
                         Return True
                     Catch ex As IOException
                         EventLogger.Log(String.Format(IRCMessages.FileSaveErr, _opFile), Reflection.MethodBase.GetCurrentMethod().Name, _sNickName)
@@ -372,7 +373,7 @@ Namespace IRC
                 If OPlist.Contains(Param) Then
                     OPlist.Remove(Param)
                     Try
-                        File.WriteAllLines(_opFile.Path, OPlist.ToArray)
+                        File.WriteAllLines(_opFile, OPlist.ToArray)
                         Return True
                     Catch ex As System.IO.IOException
                         EventLogger.Log(String.Format(IRCMessages.FileSaveErr, _opFile), Reflection.MethodBase.GetCurrentMethod().Name, _sNickName)
