@@ -190,7 +190,7 @@
     <value>Cada {0} segundos.</value>
   </data>
   <data name="Executions" xml:space="preserve">
-    <value>Eejcuciones : </value>
+    <value>Ejecuciones : </value>
   </data>
   <data name="ExitMessage" xml:space="preserve">
     <value>OK, me voy...</value>

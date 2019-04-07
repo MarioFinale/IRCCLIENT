@@ -307,7 +307,7 @@ Friend Class IRCMessages
     End Property
     
     '''<summary>
-    '''  Busca una cadena traducida similar a Eejcuciones : .
+    '''  Busca una cadena traducida similar a Ejecuciones : .
     '''</summary>
     Friend Shared ReadOnly Property Executions() As String
         Get
