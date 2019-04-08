@@ -282,7 +282,9 @@ Namespace IRC
                 Dim comment As String = IRCMessages.RequestedByOp
                 args.Client.Quit(comment)
                 EventLogger.Log("QUIT", "IRC", args.Realname)
-                Return mes
+                System.Threading.Thread.Sleep(2000) '2 sec para que guarde el log y cierre el cliente.
+                Environment.Exit(1) 'Bye
+                Return mes 'Nunca se ejecuta, pero lo dejamos para evitar mensajes de advertencia del compilador.
             Else
                 Return Nothing
             End If
