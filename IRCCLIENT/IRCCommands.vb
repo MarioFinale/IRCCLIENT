@@ -12,7 +12,7 @@ Namespace IRC
             If args Is Nothing Then Return Nothing
             Dim Client As IRC_Client = args.Client
             Dim source As String = args.Source
-            If args.IsOp Then
+            If args.Client.IsOp(args.Imputline, args.Source, args.Realname) Then
                 Dim responsestring As String = String.Empty
                 responsestring = String.Format(IRCMessages.WaitingTime, ColoredText(Client.FloodDelay.ToString, 4))
                 Return New IRCMessage(source, responsestring.ToArray)
@@ -25,7 +25,7 @@ Namespace IRC
             If args Is Nothing Then Return Nothing
             Dim Client As IRC_Client = args.Client
             Dim source As String = args.Source
-            If args.IsOp Then
+            If args.Client.IsOp(args.Imputline, args.Source, args.Realname) Then
                 Dim responsestring As String = String.Empty
 
                 Threading.Thread.CurrentThread.CurrentUICulture = New Globalization.CultureInfo("es-ES")
@@ -48,7 +48,7 @@ Namespace IRC
             Dim value As String = args.CParam
             Dim source As String = args.Source
             Dim client As IRC_Client = args.Client
-            If args.IsOp Then
+            If args.Client.IsOp(args.Imputline, args.Source, args.Realname) Then
                 Dim responsestring As String = String.Empty
                 If Not IsNumeric(value) Then
                     Return New IRCMessage(source, IRCMessages.NumericValue)
@@ -128,7 +128,7 @@ Namespace IRC
 
         Function PauseTask(ByVal args As IRCCommandParams) As IRCMessage
             If args Is Nothing Then Return Nothing
-            If args.IsOp Then
+            If args.Client.IsOp(args.Imputline, args.Source, args.Realname) Then
                 Dim taskindex As String = args.CParam
                 Dim source As String = args.Source
                 Dim user As String = args.Realname
@@ -192,7 +192,7 @@ Namespace IRC
 
         Function SetOp(ByVal args As IRCCommandParams) As IRCMessage
             If args Is Nothing Then Return Nothing
-            If args.IsOp Then
+            If args.Client.IsOp(args.Imputline, args.Source, args.Realname) Then
                 Dim message As String = args.Imputline
                 Dim Client As IRC_Client = args.Client
                 Dim source As String = args.Source
@@ -220,7 +220,7 @@ Namespace IRC
 
         Function DEOp(ByVal args As IRCCommandParams) As IRCMessage
             If args Is Nothing Then Return Nothing
-            If args.IsOp Then
+            If args.Client.IsOp(args.Imputline, args.Source, args.Realname) Then
                 Dim message As String = args.Imputline
                 Dim Client As IRC_Client = args.Client
                 Dim source As String = args.Source
@@ -247,7 +247,7 @@ Namespace IRC
 
         Function JoinRoom(ByVal args As IRCCommandParams) As IRCMessage
             If args Is Nothing Then Return Nothing
-            If args.IsOp Then
+            If args.Client.IsOp(args.Imputline, args.Source, args.Realname) Then
                 Dim command As String = String.Format("JOIN {0}", args.CParam)
                 args.Client.SendText(command)
                 Dim responsestring As String = ColoredText(String.Format(IRCMessages.EnteringRoom, args.CParam), 4)
@@ -261,7 +261,7 @@ Namespace IRC
 
         Function LeaveRoom(ByVal args As IRCCommandParams) As IRCMessage
             If args Is Nothing Then Return Nothing
-            If args.IsOp Then
+            If args.Client.IsOp(args.Imputline, args.Source, args.Realname) Then
                 Dim responsestring As String = ColoredText(String.Format(IRCMessages.LeavingRoom, args.CParam), 4)
                 Dim command As String = String.Format("PART {0}", args.CParam)
                 args.Client.SendText(command)
@@ -275,7 +275,7 @@ Namespace IRC
 
         Function Quit(ByVal args As IRCCommandParams) As IRCMessage
             If args Is Nothing Then Return Nothing
-            If args.IsOp Then
+            If args.Client.IsOp(args.Imputline, args.Source, args.Realname) Then
                 Dim responsestring As String = ColoredText(IRCMessages.ExitMessage, 4)
                 Dim mes As New IRCMessage(args.Source, responsestring)
                 args.Client.Sendmessage(mes)
@@ -318,7 +318,7 @@ Namespace IRC
 
         Function LastLogComm(ByVal args As IRCCommandParams) As IRCMessage
             If args Is Nothing Then Return Nothing
-            If args.IsOp Then
+            If args.Client.IsOp(args.Imputline, args.Source, args.Realname) Then
                 Dim responsestring As String = String.Empty
                 Dim lastlogdata As String() = EventLogger.Lastlog("IRC", args.Realname)
                 responsestring = String.Format("Ultimo registro de: {3} via {2} a las {0}/ Tipo: {4}/ Accion: {1}", ColoredText(lastlogdata(0), 4), lastlogdata(1), lastlogdata(2), lastlogdata(3), lastlogdata(4))

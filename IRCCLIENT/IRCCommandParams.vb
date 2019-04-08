@@ -12,7 +12,6 @@ Namespace IRC
         Public ReadOnly Property CParam As String
         Public ReadOnly Property Client As IRC_Client
         Public ReadOnly Property Imputline As String
-        Public ReadOnly Property IsOp As Boolean
         Public ReadOnly Property Workerbot As Bot
         Public ReadOnly Property CommandName As String
         Public ReadOnly Property MessageLine As String
@@ -70,6 +69,7 @@ Namespace IRC
             _CParam = commandParam
             _CommandName = MainParam
             _MessageLine = sParam
+
         End Sub
 
         Private Function GetParams(ByVal param As String) As String()
