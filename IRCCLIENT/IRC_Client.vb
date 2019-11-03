@@ -58,8 +58,16 @@ Namespace IRC
         End Property
 #End Region
 
+        Public Sub New(ByVal Cfile As String, ByVal port As Int32, ByVal opFile As String, ByRef bot As WikiBot.Bot, taskadmin As TaskAdmin, exeversion As String, exename As String, commandprefixes As String(), logpath As String)
+            EventLogger.LogPath = logpath
+            Init(Cfile, port, opFile, bot, taskadmin, exeversion, exename, commandprefixes)
+        End Sub
 
         Public Sub New(ByVal Cfile As String, ByVal port As Int32, ByVal opFile As String, ByRef bot As WikiBot.Bot, taskadmin As TaskAdmin, exeversion As String, exename As String, commandprefixes As String())
+            Init(Cfile, port, opFile, bot, taskadmin, exeversion, exename, commandprefixes)
+        End Sub
+
+        Private Sub Init(ByVal Cfile As String, ByVal port As Int32, ByVal opFile As String, ByRef bot As WikiBot.Bot, taskadmin As TaskAdmin, exeversion As String, exename As String, commandprefixes As String())
             Prefixes = commandprefixes
             Commands = New IRCCommandResolver(Prefixes)
             _workerbot = bot
