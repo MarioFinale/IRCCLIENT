@@ -4,6 +4,7 @@ Imports System.IO
 Imports System.Net.Sockets
 Imports MWBot.net
 Imports Utils.Utils
+Imports IRCCLIENT.My.Resources
 
 Namespace IRC
     Public Class IRC_Client

@@ -1,5 +1,6 @@
 ﻿Option Strict On
 Option Explicit On
+Imports IRCCLIENT.My.Resources
 Imports MWBot.net.WikiBot
 Imports Utils.Utils
 
