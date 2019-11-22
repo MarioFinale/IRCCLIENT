@@ -529,7 +529,7 @@ Namespace IRC
                 End If
                 Dim beginmessage As String = String.Format("Información sobre {0}: Última edición por {1}; Categorias: {2}; Visitas diarias (promedio últimos dos meses): {3}; Tamaño: {5} bytes; Puntaje ORES (Última edición): {4}",
                                        ColoredText(PageName, 3), ColoredText(pag.Lastuser, 3), ColoredText(CatString, 6), ColoredText(pag.PageViews.ToString, 13),
-                                       "Dañina: " & ColoredText(pag.ORESScores(0).ToString, 4) & " Buena fe: " & ColoredText(pag.ORESScores(1).ToString, 3), ColoredText(pag.Size.ToString, 3))
+                                       "Dañina: " & ColoredText(pag.ORESScore(0).ToString, 4) & " Buena fe: " & ColoredText(pag.ORESScore(1).ToString, 3), ColoredText(pag.Size.ToString, 3))
 
                 Dim endmessage As String = "Enlace al artículo: " & ColoredText(" " & args.Workerbot.WikiUri.OriginalString & "wiki/" & PageName.Replace(" ", "_") & " ", 10)
 
