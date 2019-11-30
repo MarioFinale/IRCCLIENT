@@ -3,8 +3,8 @@
   <PropertyGroup>
     <RootNamespace>IRCCLIENT</RootNamespace>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyVersion>1.0.7256.8504</AssemblyVersion>
-    <FileVersion>1.0.7256.8504</FileVersion>
+    <AssemblyVersion>1.0.7269.40781</AssemblyVersion>
+    <FileVersion>1.0.7269.40781</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
