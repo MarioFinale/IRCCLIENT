@@ -60,25 +60,10 @@ Namespace IRC
 #End Region
 
 
-        Public Sub New(ByVal Cfile As String, ByVal port As Int32, ByVal opFile As String, ByRef bot As WikiBot.Bot, taskadmin As TaskAdmin, exeversion As String, exename As String, commandprefixes As String(), logpath As String)
-            EventLogger.LogPath = logpath
+        Public Sub New(ByVal Cfile As String, ByVal port As Int32, ByVal opFile As String, ByRef bot As WikiBot.Bot, taskadmin As TaskAdmin, exeversion As String, exename As String, commandprefixes As String(), ByRef logeng As LogEngine.LogEngine)
+            EventLogger = logeng
             Init(Cfile, port, opFile, bot, taskadmin, exeversion, exename, commandprefixes)
         End Sub
-
-        Public Sub New(ByVal Cfile As String, ByVal port As Int32, ByVal opFile As String, ByRef bot As WikiBot.Bot, taskadmin As TaskAdmin, exeversion As String, exename As String, commandprefixes As String())
-            Init(Cfile, port, opFile, bot, taskadmin, exeversion, exename, commandprefixes)
-        End Sub
-
-        Function SetLogConfig(ByVal Logpath As String, Userpath As String, BotName As String, Verbose As Boolean) As Boolean
-            Try
-                Dim newLogger As New LogEngine.LogEngine(Logpath, Userpath, BotName, Verbose)
-                EventLogger = newLogger
-            Catch ex As Exception
-                EventLogger.EX_Log(ex.Message, "IRCCLIENT:SetLogConfig", "N/A")
-                Return False
-            End Try
-            Return True
-        End Function
 
         Private Sub Init(ByVal Cfile As String, ByVal port As Int32, ByVal opFile As String, ByRef bot As WikiBot.Bot, taskadmin As TaskAdmin, exeversion As String, exename As String, commandprefixes As String())
             Prefixes = commandprefixes
