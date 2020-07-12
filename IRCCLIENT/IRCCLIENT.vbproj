@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>IRCCLIENT</RootNamespace>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyVersion>1.0.7274.35618</AssemblyVersion>
     <FileVersion>1.0.7274.35618</FileVersion>
   </PropertyGroup>
@@ -13,13 +13,13 @@
 
   <ItemGroup>
     <Reference Include="LogEngine">
-      <HintPath>..\..\Comp\netcoreapp3.0\LogEngine.dll</HintPath>
+      <HintPath>..\..\Comp\netcoreapp3.1\LogEngine.dll</HintPath>
     </Reference>
     <Reference Include="MWBot.net">
-      <HintPath>..\..\Comp\netcoreapp3.0\MWBot.net.dll</HintPath>
+      <HintPath>..\..\Comp\netcoreapp3.1\MWBot.net.dll</HintPath>
     </Reference>
     <Reference Include="Utils">
-      <HintPath>..\..\Comp\netcoreapp3.0\Utils.dll</HintPath>
+      <HintPath>..\..\Comp\netcoreapp3.1\Utils.dll</HintPath>
     </Reference>
   </ItemGroup>
 
