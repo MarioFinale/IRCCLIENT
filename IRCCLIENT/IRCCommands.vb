@@ -2,9 +2,10 @@
 Option Explicit On
 Imports System.Globalization
 Imports MWBot.net
+Imports MWBot.net.Utility
+Imports MWBot.net.Utility.Utils
 Imports MWBot.net.WikiBot
 Imports MWBot.net.GlobalVars
-Imports Utils.Utils
 Imports IRCCLIENT.My.Resources
 Namespace IRC
     Public Class IRCCommands

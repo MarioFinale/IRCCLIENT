@@ -3,7 +3,8 @@ Option Explicit On
 Imports System.IO
 Imports System.Net.Sockets
 Imports MWBot.net
-Imports Utils.Utils
+Imports MWBot.net.Utility
+Imports MWBot.net.Utility.Utils
 Imports IRCCLIENT.My.Resources
 
 Namespace IRC
@@ -60,8 +61,12 @@ Namespace IRC
 #End Region
 
 
-        Public Sub New(ByVal Cfile As String, ByVal port As Int32, ByVal opFile As String, ByRef bot As WikiBot.Bot, taskadmin As TaskAdmin, exeversion As String, exename As String, commandprefixes As String(), ByRef logeng As LogEngine.LogEngine)
+        Public Sub New(ByVal Cfile As String, ByVal port As Int32, ByVal opFile As String, ByRef bot As WikiBot.Bot, taskadmin As TaskAdmin, exeversion As String, exename As String, commandprefixes As String(), ByRef logeng As SimpleLogger)
             EventLogger = logeng
+            Init(Cfile, port, opFile, bot, taskadmin, exeversion, exename, commandprefixes)
+        End Sub
+
+        Public Sub New(ByVal Cfile As String, ByVal port As Int32, ByVal opFile As String, ByRef bot As WikiBot.Bot, taskadmin As TaskAdmin, exeversion As String, exename As String, commandprefixes As String())
             Init(Cfile, port, opFile, bot, taskadmin, exeversion, exename, commandprefixes)
         End Sub
 

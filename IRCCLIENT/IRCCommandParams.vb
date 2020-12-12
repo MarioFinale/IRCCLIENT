@@ -1,8 +1,9 @@
 ﻿Option Strict On
 Option Explicit On
 Imports MWBot.net.WikiBot
-Imports MWBot.net
-Imports Utils.Utils
+Imports MWBot.net.Utility
+Imports MWBot.net.Utility.Utils
+
 Namespace IRC
     Public Class IRCCommandParams
 

@@ -2,7 +2,7 @@
 Option Explicit On
 Imports IRCCLIENT.My.Resources
 Imports MWBot.net.WikiBot
-Imports Utils.Utils
+Imports MWBot.net.Utility.Utils
 
 Namespace IRC
     Class IRCCommandResolver
