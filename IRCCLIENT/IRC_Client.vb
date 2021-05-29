@@ -28,6 +28,7 @@ Namespace IRC
         Private _bInvisible As Boolean = False
         Private _sRealName As String = String.Empty
         Private _sUserName As String = String.Empty
+        Private _useSASL As Boolean = False
 
         Private _tcpClient As TcpClient = Nothing
         Private _networkStream As NetworkStream = Nothing
@@ -57,6 +58,15 @@ Namespace IRC
             Get
                 Return _sServer
             End Get
+        End Property
+
+        Public Property UseSASL As Boolean
+            Get
+                Return _useSASL
+            End Get
+            Set(value As Boolean)
+                _useSASL = value
+            End Set
         End Property
 #End Region
 
@@ -153,12 +163,59 @@ Namespace IRC
                     Else
                         sIsInvisible = "0"
                     End If
-
-                    'Attempt nickserv auth (freenode server pass method)
-                    If Not String.IsNullOrEmpty(_sPass) Then
-                        EventLogger.Log(IRCMessages.NickervAuth, Reflection.MethodBase.GetCurrentMethod().Name, _sNickName)
-                        _streamWriter.WriteLine(String.Format("PASS {0}:{1}", _sNickName, _sPass))
+                    If _useSASL Then
+                        'Ask for SASL auth methods
+                        _streamWriter.WriteLine("CAP REQ :sasl")
                         _streamWriter.Flush()
+                        Dim capAuth As Boolean = False
+                        Dim pwsent As Boolean = False
+                        Dim authDone As Boolean = False
+                        While True
+                            sCommand = _streamReader.ReadLine
+                            EventLogger.Debug_Log(sCommand, Reflection.MethodBase.GetCurrentMethod().Name, _sNickName)
+                            Dim sCommandParts As String() = sCommand.Split(CType(" ", Char()))
+                            If sCommandParts.Count >= 5 Then
+                                If sCommandParts(1).Equals("CAP") And sCommandParts(2).Equals("*") And sCommandParts(3).Equals("ACK") And sCommandParts(4).Equals(":sasl") Then
+                                    _streamWriter.WriteLine("AUTHENTICATE PLAIN")
+                                    _streamWriter.Flush()
+                                    capAuth = True
+                                End If
+                            End If
+                            If capAuth Then
+                                If sCommandParts.Count = 2 Then
+                                    If sCommandParts(0).Equals("AUTHENTICATE") And sCommandParts(1).Equals("+") Then
+                                        Dim str As String = _sNickName & Chr(0) & _sNickName & Chr(0) & _sPass
+                                        Dim txt As Byte() = System.Text.Encoding.ASCII.GetBytes(str)
+                                        Dim tmppwstr As String = System.Convert.ToBase64String(txt)
+                                        _streamWriter.WriteLine("AUTHENTICATE " & tmppwstr)
+                                        _streamWriter.Flush()
+                                        pwsent = True
+                                        capAuth = False
+                                    End If
+                                End If
+                            End If
+
+                            If pwsent Then
+                                If sCommandParts.Count > 2 Then
+                                    If sCommandParts(1).Equals("900") And sCommandParts(2).Equals("*") Then
+                                        _streamWriter.WriteLine("CAP END")
+                                        _streamWriter.Flush()
+                                        authDone = True
+                                    End If
+                                End If
+                            End If
+
+                            If authDone Then
+                                Exit While
+                            End If
+                        End While
+                    Else
+                        'Attempt nickserv auth (freenode server pass method)
+                        If Not String.IsNullOrEmpty(_sPass) Then
+                            EventLogger.Log(IRCMessages.NickervAuth, Reflection.MethodBase.GetCurrentMethod().Name, _sNickName)
+                            _streamWriter.WriteLine(String.Format("PASS {0}:{1}", _sNickName, _sPass))
+                            _streamWriter.Flush()
+                        End If
                     End If
 
                     'Create nickname.
@@ -184,6 +241,7 @@ Namespace IRC
                                            While True
 
                                                sCommand = _streamReader.ReadLine
+                                               EventLogger.Debug_Log(sCommand, Reflection.MethodBase.GetCurrentMethod().Name, _sNickName)
 
                                                Dim sCommandParts As String() = sCommand.Split(CType(" ", Char()))
 

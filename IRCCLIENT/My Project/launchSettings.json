@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "IRCCLIENT": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\MarioFinale\\Documents\\GitHub\\Comp\\netcoreapp3.1\\PeriodiBOT-IRC.exe"
+    }
+  }
+}
