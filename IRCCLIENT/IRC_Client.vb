@@ -95,7 +95,11 @@ Namespace IRC
             Dim tname As String
             Dim tpass As String
             Dim tchannels As String()
-            Dim params As String() = File.ReadAllLines(Cfile)
+            Dim params As String() = {""}
+
+            If File.Exists(Cfile) Then
+                params = File.ReadAllLines(Cfile)
+            End If
 
             If Not params.Count = 4 Then
                 IO.File.Delete(Cfile)
