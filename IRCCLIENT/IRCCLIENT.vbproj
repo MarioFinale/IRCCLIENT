@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>IRCCLIENT</RootNamespace>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyVersion>1.0.2110.27913</AssemblyVersion>
     <FileVersion>1.0.2110.27913</FileVersion>
   </PropertyGroup>
@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <Reference Include="MWBot.net">
-      <HintPath>..\..\Comp\netcoreapp3.1\MWBot.net.dll</HintPath>
+      <HintPath>..\..\Comp\net6.0\MWBot.net.dll</HintPath>
     </Reference>
   </ItemGroup>
 
