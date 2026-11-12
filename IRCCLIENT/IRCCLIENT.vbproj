@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>IRCCLIENT</RootNamespace>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AssemblyVersion>1.0.2110.27913</AssemblyVersion>
     <FileVersion>1.0.2110.27913</FileVersion>
   </PropertyGroup>
@@ -10,12 +10,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\..\Comp\</OutputPath>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="MWBot.net">
-      <HintPath>..\..\Comp\net6.0\MWBot.net.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Update="IRCMessages.Designer.vb">
@@ -31,6 +25,10 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <LastGenOutput>IRCMessages.Designer.vb</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\MWBot.net\MWBot.net\MWBot.net.vbproj" />
   </ItemGroup>
 
 </Project>
