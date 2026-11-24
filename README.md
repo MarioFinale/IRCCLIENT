@@ -47,7 +47,39 @@ myPasswordOrEmpty
 #channel1|#channel2
 ```
 
-### Basic Usage (VB.NET)
+### Basic Usage
+
+#### C#
+
+```csharp
+using IRC;
+using MWBot.net.WikiBot;
+
+// Assuming you already have a WikiBot instance and TaskAdmin
+Bot bot = ...; // your MWBot.net Bot
+TaskAdmin taskAdmin = ...;
+string configFile = "irc.cfg";
+string opFile = "ops.txt";
+string[] prefixes = { "/", "%" };
+
+var ircClient = new IRC_Client(
+    Cfile: configFile,
+    port: 6667,
+    opFile: opFile,
+    bot: bot,
+    taskadmin: taskAdmin,
+    exeversion: "1.0.0",
+    exename: "MyWikiBot",
+    commandprefixes: prefixes
+);
+
+ircClient.UseSASL = true;   // Enable SASL PLAIN if the server supports it
+ircClient.FloodDelay = 700; // milliseconds between messages
+
+ircClient.StartClient();    // Starts the connection and message loop (async)
+```
+
+#### Visual Basic
 
 ```vbnet
 Imports IRC
