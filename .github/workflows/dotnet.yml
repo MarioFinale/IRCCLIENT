@@ -1,0 +1,74 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Pack
+      id: pack
+      run: |
+        VERSION="1.0.${{ github.run_number }}"
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+        echo "Packing version $VERSION"
+        dotnet pack --no-build --configuration Release -o ./nupkg /p:Version=$VERSION
+
+    - name: NuGet login (OIDC)
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      uses: NuGet/login@v1
+      id: login
+      with:
+        user: MarioFinale
+
+    - name: Publish to NuGet.org
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      run: |
+        dotnet nuget push ./nupkg/*.nupkg \
+          --api-key ${{ steps.login.outputs.NUGET_API_KEY }} \
+          --source https://api.nuget.org/v3/index.json \
+          --skip-duplicate
+
+    - name: Publish to GitHub Packages
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      run: |
+        dotnet nuget push ./nupkg/*.nupkg \
+          --api-key ${{ secrets.GITHUB_TOKEN }} \
+          --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+          --skip-duplicate
+
+    - name: Create GitHub Release
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v${{ steps.pack.outputs.VERSION }}
+        name: IRCCLIENT ${{ steps.pack.outputs.VERSION }}
+        body: |
+          Automated release from commit ${{ github.sha }}
+          Version: ${{ steps.pack.outputs.VERSION }}
+        files: |
+          nupkg/*.nupkg
+        draft: false
+        prerelease: false
